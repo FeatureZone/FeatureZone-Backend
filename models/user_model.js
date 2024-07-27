@@ -4,7 +4,10 @@ import { toJSON } from "@reis/mongoose-to-json";
 
 
 const userSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true },
+  firstName: { type: String },
+  lastName: { type: String },
+  otherNames: { type: String }, 
+  username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Snippet' }]
