@@ -1,12 +1,18 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { UserModel } from "../models/user_model.js";
+import { userSchema } from "../validators/user_validator.js";
 
 //User signup
 
 export const signup = async(req, res, next) => {
     //check if user exits
    try {
+    const {error, value} = userSchema.validate(req.body);
+    if(error){
+      return res.status(400).send(error.details[0].message)
+    }
+    //Check if udser exits
      const email = value.email
      console.log('email', email)
  
@@ -60,3 +66,15 @@ export const login = async (req, res, next) => {
         
     }
 }
+
+//logout user
+export const logout = async(req, res, next) => {
+  try {
+     //Destroy user session
+     await req.session.destroy();
+     //Return response
+     res.status(200).json('User logged out')
+  } catch (error) {
+     next(error)
+  }
+  }
