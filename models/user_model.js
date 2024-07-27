@@ -3,6 +3,7 @@ import { toJSON } from "@reis/mongoose-to-json";
 
 
 
+
 const userSchema = new mongoose.Schema({
   firstName: { type: String },
   lastName: { type: String },
@@ -14,4 +15,14 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.plugin(toJSON);
-export const UserModel = ("User", userSchema);
+export const UserModel = model("User", userSchema);
+
+const userSchema = new Schema({
+    username: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+  });
+
+  userSchema.plugin(toJSON);
+  export const UserModel = model("User", userSchema);
+
