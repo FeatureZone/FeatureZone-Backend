@@ -4,7 +4,7 @@ import { toJSON } from "@reis/mongoose-to-json";
 
 
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
   firstName: { type: String },
   lastName: { type: String },
   otherNames: { type: String },
