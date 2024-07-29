@@ -34,34 +34,38 @@ export const signup = async(req, res, next) => {
 
 //User login token
 export const login = async (req, res, next) => {
-    const {email, username, password} = req.body;
-       //Find a user using their unique identifier
-    const user = await UserModel.findOne({
-        $or:[
-            {email: email},
-            {username: username},
-          ]
-    })
-    if(!user){
-        return res.status(401).json('No user found')
-    }else{
-        //Verify password
-        const correctPassword = bcrypt.compareSync(req.body.password, user.password);
-       if(!correctPassword){
-        res.status(401).json('Invalid credentials');
-       }else{
-         //Generate a token
-         const token = jwt.sign (
-            {id: user.id}, 
-            process.env.JWT_PRIVATE_KEY,
-            {expiresIn: '24h'},
-          );
-          res.status(200).json({
-            message: 'User logged in successfully',
-            accessToken: token
-          })
-       }
-        
+    try {
+      const {email, username, password} = req.body;
+         //Find a user using their unique identifier
+      const user = await UserModel.findOne({
+          $or:[
+              {email: email},
+              {username: username},
+            ]
+      })
+      if(!user){
+          return res.status(401).json('No user found')
+      }else{
+          //Verify password
+          const correctPassword = bcrypt.compareSync(req.body.password, user.password);
+         if(!correctPassword){
+          res.status(401).json('Invalid credentials');
+         }else{
+           //Generate a token
+           const token = jwt.sign (
+              {id: user.id}, 
+              process.env.JWT_PRIVATE_KEY,
+              {expiresIn: '24h'},
+            );
+            res.status(200).json({
+              message: 'User logged in successfully',
+              accessToken: token
+            })
+         }
+          
+      }
+    } catch (error) {
+      next(error)
     }
 }
 
@@ -73,6 +77,6 @@ export const logout = async (req, res, next) => {
     //Return response
     res.status(200).json("User logged out")
   } catch (error) {
-    console.log(error)
+    next(error)
   }
 }
