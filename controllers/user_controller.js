@@ -23,11 +23,9 @@ export const signup = async(req, res, next) => {
          const hashedPassword = await bcrypt.hash(value.password, 12)
          value.password = hashedPassword
          //create user
-         const addUser = await UserModel.create(value)
+         await UserModel.create(value)
  
-         req.session.user = {id: addUser.id}
- 
-         return res.status(201).send('User created successfully')  
+         return res.status(201).send({message: 'User created successfully'})  
      }
    } catch (error) {
     next(error)
@@ -36,45 +34,49 @@ export const signup = async(req, res, next) => {
 
 //User login token
 export const login = async (req, res, next) => {
-    const {email, username, password} = req.body;
-       //Find a user using their unique identifier
-    const user = await UserModel.findOne({
-        $or:[
-            {email: email},
-            {username: username},
-          ]
-    })
-    if(!user){
-        return res.status(401).json('No user found')
-    }else{
-        //Verify password
-        const correctPassword = bcrypt.compareSync(req.body.password, user.password);
-       if(!correctPassword){
-        res.status(401).json('Invalid credentials');
-       }else{
-         //Generate a token
-         const token = jwt.sign (
-            {id: user.id}, 
-            process.env.JWT_PRIVATE_KEY,
-            {expiresIn: '24h'},
-          );
-          res.status(200).json({
-            message: 'User logged in successfully',
-            accessToken: token
-          })
-       }
-        
+    try {
+      const {email, username, password} = req.body;
+         //Find a user using their unique identifier
+      const user = await UserModel.findOne({
+          $or:[
+              {email: email},
+              {username: username},
+            ]
+      })
+      if(!user){
+          return res.status(401).json('No user found')
+      }else{
+          //Verify password
+          const correctPassword = bcrypt.compareSync(req.body.password, user.password);
+         if(!correctPassword){
+          res.status(401).json('Invalid credentials');
+         }else{
+           //Generate a token
+           const token = jwt.sign (
+              {id: user.id}, 
+              process.env.JWT_PRIVATE_KEY,
+              {expiresIn: '24h'},
+            );
+            res.status(200).json({
+              message: 'User logged in successfully',
+              accessToken: token
+            })
+         }
+          
+      }
+    } catch (error) {
+      next(error)
     }
 }
 
 //logout user
-export const logout = async(req, res, next) => {
+export const logout = async (req, res, next) => {
+  //Destroy
   try {
-     //Destroy user session
-     await req.session.destroy();
-     //Return response
-     res.status(200).json('User logged out')
+    await req.session.destroy();
+    //Return response
+    res.status(200).json("User logged out")
   } catch (error) {
-     next(error)
+    next(error)
   }
-  }
+}
