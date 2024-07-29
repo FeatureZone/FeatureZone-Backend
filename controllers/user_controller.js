@@ -23,11 +23,9 @@ export const signup = async(req, res, next) => {
          const hashedPassword = await bcrypt.hash(value.password, 12)
          value.password = hashedPassword
          //create user
-         const addUser = await UserModel.create(value)
+         await UserModel.create(value)
  
-         req.session.user = {id: addUser.id}
- 
-         return res.status(201).send('User created successfully')  
+         return res.status(201).send({message: 'User created successfully'})  
      }
    } catch (error) {
     next(error)
@@ -68,13 +66,13 @@ export const login = async (req, res, next) => {
 }
 
 //logout user
-export const logout = async(req, res, next) => {
+export const logout = async (req, res, next) => {
+  //Destroy
   try {
-     //Destroy user session
-     await req.session.destroy();
-     //Return response
-     res.status(200).json('User logged out')
+    await req.session.destroy();
+    //Return response
+    res.status(200).json("User logged out")
   } catch (error) {
-     next(error)
+    console.log(error)
   }
-  }
+}
