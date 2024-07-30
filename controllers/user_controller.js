@@ -1,14 +1,14 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { UserModel } from "../models/user_model.js";
-import { userSchema } from "../validators/user_validator.js";
+import { userValidator } from "../validators/user_validator.js";
 
 //User signup
 
 export const signup = async(req, res, next) => {
     //check if user exits
    try {
-    const {error, value} = userSchema.validate(req.body);
+    const {error, value} = userValidator.validate(req.body);
     if(error){
       return res.status(400).send(error.details[0].message)
     }
