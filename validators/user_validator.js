@@ -10,3 +10,9 @@ export const userSchema = Joi.object({
     confirmPassword: Joi.ref('password'),
 
 }).with('password', 'confirmPassword')
+
+export const loginValidator = Joi.object({
+    username: Joi.string(),
+    email: Joi.string().email(),
+    password: Joi.string().required(),
+});

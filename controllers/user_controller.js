@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { UserModel } from "../models/user_model.js";
-import { userSchema } from "../validators/user_validator.js";
+import { loginValidator, userSchema } from "../validators/user_validator.js";
 
 //User signup
 
@@ -35,6 +35,11 @@ export const signup = async(req, res, next) => {
 //User login token
 export const login = async (req, res, next) => {
     try {
+      //Validate a login
+      const { value, error } = loginValidator.validate(req.body);
+      if (error) {
+        return res.status(422).json(error);
+    }
       const {email, username, password} = req.body;
          //Find a user using their unique identifier
       const user = await UserModel.findOne({
