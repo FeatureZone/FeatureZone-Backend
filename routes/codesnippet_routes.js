@@ -8,8 +8,8 @@ codesnippetRouter.post("codes", createCode);
 
 codesnippetRouter.get("/codes", getAllCodes);
 
-codesnippetRouter.get("/codes/:codeId", getOneCode);
+codesnippetRouter.get("/codes/:id", getOneCode);
 
-codesnippetRouter.patch("/codes/:codeId", updateCode);
+codesnippetRouter.patch("/codes/:id", updateCode);
 
-codesnippetRouter.delete("/codes/:codeId", deleteCode);
+codesnippetRouter.delete("/codes/:id", deleteCode);
