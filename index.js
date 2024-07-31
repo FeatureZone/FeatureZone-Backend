@@ -16,8 +16,6 @@ app.use(userRouter);
  app.use(favouriteRouter);
 
 
-
-
 app.listen(4500, () =>
     console.log('Server is running') 
 )
