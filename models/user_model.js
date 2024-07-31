@@ -12,8 +12,8 @@ const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
   role: { type: String, enum: ['user', 'admin'], default: 'user' },
   password: { type: String, required: true },
-  passwordResetToken: { type: String},
-  passwordResetTokenExpires: { type: Date },
+  sendOtpForPasswordReset: { type: String},
+  verifyOtpAndResetPassword: { type: Date },
  termsAndConditions: { type: Boolean },
  },{
   timestamps: true

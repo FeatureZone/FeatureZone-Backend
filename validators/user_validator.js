@@ -19,4 +19,4 @@ export const loginValidator = Joi.object({
 });
     termsAndConditions: Joi.boolean().required()
     
-})
+
