@@ -14,7 +14,6 @@ export const createCode = async (req, res) => {
         title,
         content,
         language,
-        description,
       });
   
       await newCode.save();
