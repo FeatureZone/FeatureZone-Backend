@@ -4,6 +4,7 @@ import { toJSON } from "@reis/mongoose-to-json";
 
 //User Model
 
+
 const userSchema = new Schema({
   firstName: { type: String },
   lastName: { type: String },
@@ -13,8 +14,9 @@ const userSchema = new Schema({
   role: { type: String, enum: ['user', 'admin'], default: 'user' },
   password: { type: String, required: true },
   passwordResetToken: { type: String},
-  passwordResetTokenExpires: { type: Date },
- termsAndConditions: { type: Boolean },
+  passwordResetTokenExpires: { type: Date }, 
+  favourites: [{type:Types.ObjectId, ref: "CodeSnippet"}],
+  termsAndConditions: { type: Boolean },
  },{
   timestamps: true
 });
