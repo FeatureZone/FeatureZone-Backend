@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 import 'dotenv/config'
 
-const connectionString = process.env.Mongo_url
+const connectionString = process.env.Mongo_Url
 
 
 
