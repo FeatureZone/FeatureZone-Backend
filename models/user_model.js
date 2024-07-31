@@ -4,6 +4,7 @@ import { toJSON } from "@reis/mongoose-to-json";
 
 //User Model
 
+
 const userSchema = new Schema({
   firstName: { type: String },
   lastName: { type: String },
