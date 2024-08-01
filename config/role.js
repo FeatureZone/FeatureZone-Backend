@@ -20,6 +20,7 @@ export const roles = [
             'update_favourite',
              'delete_favourite',
              'add_favourite',
+             'read_users',
         ],
     }
 ]
