@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { UserModel } from "../models/user_model";
+import { UserModel } from "../models/user_model.js";
 import { roles } from "../config/role.js";
 
 export const isAuthenticated = (req,res,next) => {

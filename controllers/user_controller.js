@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { UserModel } from "../models/user_model.js";
-import { loginValidator, userSchema } from "../validators/user_validator.js";
+import { loginValidator, updateUserValidator, userValidator } from "../validators/user_validator.js";
 
 
 //User signup
@@ -91,9 +91,12 @@ export const logout = async (req, res, next) => {
 
 // Get a single user
 export const getOneUser = async (req, res, next) => {
+
+  const id = req.session?.user?.id || req?.user.id
   try {
     // Find user by ID
-    const user = await UserModel.findById(req.params.id);
+    const user = await UserModel.findById(id)
+    .select({password: false});
 
     if (!user) {
       return res.status(404).json('User not found!');
@@ -109,8 +112,14 @@ export const getOneUser = async (req, res, next) => {
 // Update a user
 export const updateUser = async (req, res, next) => {
   try {
+    const {value, error} = updateUserValidator.validate(req.body)
+    if (error) {
+      return res.status(422).json(error);
+  }
+
+  const id = req.session?.user?.id || req?.user.id
     // Find user by ID
-    const user = await UserModel.findByIdAndUpdate(req.params.id, req.body, {
+    const user = await UserModel.findByIdAndUpdate(id, value, {
       new: true,
     });
 
@@ -128,6 +137,11 @@ export const updateUser = async (req, res, next) => {
 // Delete a user
 export const deleteUser = async (req, res, next) => {
   try {
+    const id = req.session?.user?.id || req?.user?.id;
+    //Ensure user is not deleting themselves
+    if(id === req.params.id) {
+      return res.status(409).json('Cannot Delete Self');
+    }
       // Delete user
       await UserModel.findByIdAndDelete(req.params.id);
       // Return response
