@@ -15,6 +15,7 @@ const userSchema = new Schema({
   password: { type: String, required: true },
   sendOtpForPasswordReset: { type: String},
   verifyOtpAndResetPassword: { type: Date },
+  favourites: [{type:Types.ObjectId, ref: "CodeSnippet"}],
  termsAndConditions: { type: Boolean },
  },{
   timestamps: true
