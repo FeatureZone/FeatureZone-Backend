@@ -28,7 +28,9 @@ export const getAllUsers = async(req, res)=>{
 
 // Generate a 6-digit OTP
 const generateOtp = () => {
-    return Math.floor(100000 + Math.random() * 900000).toString(); 
+    const otp= Math.floor(100000 + Math.random() * 900000).toString(); 
+    const hashedOtp =crypto.createHash("sha256").update(otp).digest("hex").toString();
+    return { otp,hashedOtp};
 };
 
 export const sendOtpForPasswordReset = async (req, res) => {
@@ -44,7 +46,7 @@ export const sendOtpForPasswordReset = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        // Generate an OTP
+        // Generate an OTP Expiration
         const otp = generateOtp();
         const otpExpiration = Date.now() + 300000; // OTP valid for 5 minutes
 
@@ -55,7 +57,8 @@ export const sendOtpForPasswordReset = async (req, res) => {
 
         // Send the OTP via email
         const transporter = nodemailer.createTransport({
-            service: 'Gmail',
+            host: process.env.EMAIL_HOST,
+            port: process.env.EMAIL_PORT,
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
