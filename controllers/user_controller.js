@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { UserModel } from "../models/user_model.js";
 import { loginValidator, updateUserValidator, userValidator } from "../validators/user_validator.js";
-
+import { loginValidator, userValidator } from "../validators/user_validator.js";
 
 //User signup
 
