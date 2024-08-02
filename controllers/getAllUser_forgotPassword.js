@@ -27,33 +27,28 @@ export const getAllUsers = async(req, res)=>{
 }
 
 // Generate a 6-digit OTP
-const generateOtp = () => {
-    const otp= Math.floor(100000 + Math.random() * 900000).toString(); 
-    const hashedOtp =crypto.createHash("sha256").update(otp).digest("hex").toString();
-    return { otp,hashedOtp};
-};
-
-export const sendOtpForPasswordReset = async (req, res) => {
-    const email = req.body.email?.toLowerCase();
-
-    if (!email) {
-        return res.status(400).json({ message: "Email is required" });
-    }
-
+const generateOTP = () => {
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    const otpString = otp.toString();
+    const hashedOtp = crypto.createHash("sha256").update(otpString).digest("hex");
+    const newOtp = otp.toString();
+    return { otpString, hashedOtp };
+  };
+  
+  export const forgotPassword = async (req, res, next) => {
+    const { email } = req.body;
+  
     try {
-        const user = await UserModel.findOne({ email });
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        // Generate an OTP Expiration
-        const otp = generateOtp();
-        const otpExpiration = Date.now() + 300000; // OTP valid for 5 minutes
-
-        // Save the OTP and expiration to the user record
-        user.otp = otp;
-        user.otpExpires = otpExpiration;
-        await user.save();
+      const user = await UserModel.findOne({ email });
+      if (!user) {
+        return res.status(404).json("No user found with the given email");
+      }
+  
+      const { otpString, hashedOtp } = generateOTP();
+      user.resetToken = hashedOtp;
+      user.resetTokenExpiresAt = Date.now() + 1800000; //Token expires in 30mins
+      await user.save();
+  
 
         // Send the OTP via email
         const transporter = nodemailer.createTransport({
@@ -69,7 +64,7 @@ export const sendOtpForPasswordReset = async (req, res) => {
             to: user.email,
             from: 'otp@yourdomain.com',
             subject: 'Your OTP Code for Password Reset',
-            text: `Your OTP code is ${otp}. It is valid for 5 minutes.`,
+            text: `Your OTP code is ${otpString}. It is valid for 5 minutes.`,
         };
 
         await transporter.sendMail(mailOptions);
