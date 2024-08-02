@@ -8,6 +8,7 @@ import { userRouter } from "./routes/user_routes.js";
 import { favouriteRouter } from "./routes/favourite_routes.js";
 import expressOasGenerator from "express-oas-generator"
 import { getUserRouter } from "./routes/getUser_route.js";
+import { commentRouter } from "./routes/comment_routes.js";
 
 const app = express();
 
@@ -44,6 +45,8 @@ dbConnection();
 app.use(userRouter);
 app.use(favouriteRouter);
 app.use(getUserRouter);
+app.use(commentRouter);
+
 expressOasGenerator.handleRequests();
 app.use((req,res) => res.redirect("/api-docs"));
 
