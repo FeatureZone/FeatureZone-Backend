@@ -1,10 +1,9 @@
 import { Router } from "express";
-import { getAllUsers, forgotPassword, sendOtpForPasswordReset, verifyOtpAndResetPassword } from "../controllers/getAllUser_forgotPassword";
+import { getAllUsers, sendOtpForPasswordReset, verifyOtpAndResetPassword } from "../controllers/getAllUser_forgotPassword.js";
 
-export const Router = Router();
+export const getUserRouter = Router();
 
 
-userRouter.get("/users", getAllUsers);
-userRouter.post("/users/auth/forgotPassword", forgotPassword);
-userRouter.post('/forgot-password/send-otp', sendOtpForPasswordReset);
-userRouter.post('/forgot-password/verify-otp', verifyOtpAndResetPassword);
+getUserRouter.get("/users", getAllUsers);
+getUserRouter.post('/forgot-password/send-otp', sendOtpForPasswordReset);
+getUserRouter.post('/forgot-password/verify-otp', verifyOtpAndResetPassword);

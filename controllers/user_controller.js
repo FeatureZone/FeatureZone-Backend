@@ -2,7 +2,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { UserModel } from "../models/user_model.js";
 import { loginValidator, updateUserValidator, userValidator } from "../validators/user_validator.js";
-
 //User signup
 
 export const signup = async(req, res, next) => {
