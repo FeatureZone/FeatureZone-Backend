@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-export const userProfileVaildator = Joi.object({
+export const userProfileValidator = Joi.object({
     profilePicture: Joi.string(),
     sex: Joi.string().valid('male', 'female').required(),
     address: Joi.string(),
