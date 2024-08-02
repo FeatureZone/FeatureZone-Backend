@@ -1,5 +1,5 @@
 import {Router} from "express";
-import {signup, login, logout, getOneUser, updateUser, deleteUser  } from "../controllers/user_controller.js"; 
+import {signup, login, logout, getOneUser, updateUser, deleteUser, getByUsername  } from "../controllers/user_controller.js"; 
 import { hasPermission, isAuthenticated } from "../middlewares/auth.js";
 
 
@@ -10,6 +10,8 @@ userRouter.post("/users/auth/signup", signup);
 userRouter.post("/users/auth/token/login", login);
 
 userRouter.post("/users/auth/logout",isAuthenticated, logout);
+
+userRouter.get("/users/auth/:username",isAuthenticated, getByUsername);
 
 userRouter.get("/users/:Id",isAuthenticated, hasPermission('read_users'), getOneUser);
 
