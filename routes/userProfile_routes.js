@@ -6,9 +6,9 @@ import { isAuthenticated } from "../middlewares/auth.js";
 
 export const userProfileRouter = Router();
 
-userProfileRouter.post('/create', isAuthenticated , createUserProfile);
+userProfileRouter.post('/userprofile/create', isAuthenticated , createUserProfile);
 
-userProfileRouter.put('/update/:id', isAuthenticated , updateUserProfile);
+userProfileRouter.patch('/userprofile/update/:id', isAuthenticated , updateUserProfile);
 
 userProfileRouter.get('/profile', isAuthenticated , getUserProfile);
 
