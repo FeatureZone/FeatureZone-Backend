@@ -9,6 +9,7 @@ import { favouriteRouter } from "./routes/favourite_routes.js";
 import expressOasGenerator from "express-oas-generator"
 import { getUserRouter } from "./routes/getUser_route.js";
 import { commentRouter } from "./routes/comment_routes.js";
+import {userProfileRouter}from "./routes/userProfile_routes.js";
 
 const app = express();
 
@@ -41,7 +42,7 @@ expressOasGenerator.handleResponses(app,{
 dbConnection();
 
 
-
+app.use(userProfileRouter);
 app.use(userRouter);
 app.use(favouriteRouter);
 app.use(getUserRouter);
