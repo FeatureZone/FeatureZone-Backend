@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addContributor } from "../controllers/project_controller.js";
+import { addContributor } from "../controllers/contributor_controller.js";
 
 export const ContributorRouter = Router();
 

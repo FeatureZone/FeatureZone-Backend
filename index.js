@@ -8,7 +8,7 @@ import { userRouter } from "./routes/user_routes.js";
 import { favouriteRouter } from "./routes/favourite_routes.js";
 import expressOasGenerator from "express-oas-generator"
 import { getUserRouter } from "./routes/getUser_route.js";
-import { ContributorRouter } from "./routes/project_routes.js";
+import { ContributorRouter } from "./routes/contributor_routes.js";
 const app = express();
 
 
