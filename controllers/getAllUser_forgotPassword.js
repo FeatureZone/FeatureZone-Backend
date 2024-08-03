@@ -37,21 +37,21 @@ export const sendOtpForPasswordReset = async (req, res) => {
     const email = req.body.email?.toLowerCase();
 
     if (!email) {
-        return res.status(400).json({ message: "Email is required" });
+        return res.status(400).json({ message: 'Email is required' });
     }
 
     try {
         const user = await UserModel.findOne({ email });
         if (!user) {
-            return res.status(404).json({ message: "User not found" });
+            return res.status(404).json({ message: 'User not found' });
         }
 
         // Generate an OTP Expiration
         const otp = generateOtp();
         const otpExpiration = Date.now() + 300000; // OTP valid for 5 minutes
 
-        // Save the OTP and expiration to the user record
-        user.otp = otp;
+        // Save the hashed OTP and expiration to the user record
+        user.otp = hashedOtp;
         user.otpExpires = otpExpiration;
         await user.save();
 
@@ -69,34 +69,36 @@ export const sendOtpForPasswordReset = async (req, res) => {
             to: user.email,
             from: 'otp@yourdomain.com',
             subject: 'Your OTP Code for Password Reset',
-            text: `Your OTP code is ${otp}. It is valid for 5 minutes.`,
+            text: `Your OTP code is ${otpString}. It is valid for 5 minutes.`,
         };
 
         await transporter.sendMail(mailOptions);
 
-        return res.status(200).json({ message: "OTP sent to your email" });
+        return res.status(200).json({ message: 'OTP sent to your email' });
     } catch (error) {
-        return res.status(500).json({ message: "Internal server error", error: error.message });
+        return res.status(500).json({ message: 'Internal server error', error: error.message });
     }
 };
-
 
 export const verifyOtpAndResetPassword = async (req, res) => {
     const { email, otp, newPassword } = req.body;
 
     if (!email || !otp || !newPassword) {
-        return res.status(400).json({ message: "Email, OTP, and new password are required" });
+        return res.status(400).json({ message: 'Email, OTP, and new password are required' });
     }
 
     try {
         const user = await UserModel.findOne({ email });
         if (!user) {
-            return res.status(404).json({ message: "User not found" });
+            return res.status(404).json({ message: 'User not found' });
         }
 
+        // Hash the provided OTP for comparison
+        const hashedOtp = crypto.createHash('sha256').update(otp).digest('hex');
+
         // Check if OTP is valid
-        if (user.otp !== otp || Date.now() > user.otpExpires) {
-            return res.status(400).json({ message: "Invalid or expired OTP" });
+        if (user.otp !== hashedOtp || Date.now() > user.otpExpires) {
+            return res.status(400).json({ message: 'Invalid or expired OTP' });
         }
 
         // Hash the new password
@@ -108,9 +110,8 @@ export const verifyOtpAndResetPassword = async (req, res) => {
         user.otpExpires = undefined;
         await user.save();
 
-        return res.status(200).json({ message: "Password has been reset successfully" });
+        return res.status(200).json({ message: 'Password has been reset successfully' });
     } catch (error) {
-        return res.status(500).json({ message: "Internal server error", error: error.message });
+        return res.status(500).json({ message: 'Internal server error', error: error.message });
     }
 };
-

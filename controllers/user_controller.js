@@ -86,6 +86,25 @@ export const logout = async (req, res, next) => {
   }
 }
 
+//Get a user details by username
+export const getByUsername = async(req, res, next) =>{
+  
+  try {
+    const username = req.params.username.toLowerCase()
+  
+    //Use populate to get the user details
+    const userDetails = await UserModel.findOne({username}).select("-password")
+    .populate({
+      path: "favourites"
+    })
+  
+    return res.status(201).json({user: userDetails})
+  } catch (error) {
+    next(error)
+  }
+}
+ 
+//Get a user 
 
 
 // Get a single user
