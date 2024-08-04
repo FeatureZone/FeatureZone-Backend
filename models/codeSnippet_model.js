@@ -7,6 +7,7 @@ const codeSnippetSchema = new Schema ({
   content: {type: String, required: true},
   language: {type: String, required: true},
   description:{type: String, required: true},
+  comments: [{ type: Types.ObjectId, ref: 'Comment' }],
   user: {type:Types.ObjectId, ref:"User"},
 })
 

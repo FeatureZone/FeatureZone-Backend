@@ -54,3 +54,24 @@ export const removeFavourites = async (req, res, next) => {
         next(error);
     }
 };
+
+
+// Get all favourites
+export const getFavourites = async (req, res, next)=> {
+    try {
+        // get user id from request
+        const userId = req.user.id;
+
+        // Find user by Id and populate favourites
+        const user = await UserModel.findById(userId).populate('favourites');
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+            }
+
+            // send popultaed array as respponse
+            res.status(200).json({favourites: user.favourites});
+    } catch (error) {
+       next(error) 
+    }
+}

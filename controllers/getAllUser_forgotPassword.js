@@ -28,10 +28,9 @@ export const getAllUsers = async(req, res)=>{
 
 // Generate a 6-digit OTP
 const generateOtp = () => {
-    const otp = Math.floor(100000 + Math.random() * 900000);
-    const otpString = otp.toString();
-    const hashedOtp = crypto.createHash('sha256').update(otpString).digest('hex');
-    return { otpString, hashedOtp };
+    const otp= Math.floor(100000 + Math.random() * 900000).toString(); 
+    const hashedOtp =crypto.createHash("sha256").update(otp).digest("hex").toString();
+    return { otp,hashedOtp};
 };
 
 export const sendOtpForPasswordReset = async (req, res) => {
@@ -47,8 +46,8 @@ export const sendOtpForPasswordReset = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        // Generate an OTP and its hash
-        const { otpString, hashedOtp } = generateOtp();
+        // Generate an OTP Expiration
+        const otp = generateOtp();
         const otpExpiration = Date.now() + 300000; // OTP valid for 5 minutes
 
         // Save the hashed OTP and expiration to the user record
