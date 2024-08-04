@@ -32,7 +32,7 @@ app.use(session({
 
 expressOasGenerator.handleResponses(app,{
     alwaysServeDocs: true,
-    tags: ["auth","userProfile", "codeSnippet", "favourites"],
+    tags: ["auth", "users", "userProfile", "codeSnippet", "favourites"],
     mongooseModels: mongoose.modelNames(),
 });
     

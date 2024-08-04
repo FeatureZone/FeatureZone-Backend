@@ -4,12 +4,12 @@ import { createCode, deleteCode, getAllCodes, getOneCode, updateCode } from "../
 
 export const codesnippetRouter = Router()
 
-codesnippetRouter.post("codes", createCode);
+codesnippetRouter.post("codeSnippet", createCode);
 
-codesnippetRouter.get("/codes", getAllCodes);
+codesnippetRouter.get("/codeSnippet", getAllCodes);
 
-codesnippetRouter.get("/codes/:id", getOneCode);
+codesnippetRouter.get("/codeSnippet/:id", getOneCode);
 
-codesnippetRouter.patch("/codes/:id", updateCode);
+codesnippetRouter.patch("/codeSnippet/:id", updateCode);
 
-codesnippetRouter.delete("/codes/:id", deleteCode);
+codesnippetRouter.delete("/codeSnippet/:id", deleteCode);
