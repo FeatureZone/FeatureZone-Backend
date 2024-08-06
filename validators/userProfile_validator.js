@@ -7,5 +7,6 @@ export const userProfileValidator = Joi.object({
     dateOfBirth: Joi.string().required(),
     bio: Joi.string(),
     contact: Joi.string(),
-
+    User: Joi.string(),
+   
 });
