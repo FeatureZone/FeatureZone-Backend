@@ -4,6 +4,7 @@ import { followUser, unfollowUser, getFollowers, getFollowing } from "../control
 export const followRouter = Router();
 
 
+
 followRouter.post('/users/following/:followerId', followUser);
 
 followRouter.delete('/users/following/:followerId', unfollowUser);
@@ -11,3 +12,4 @@ followRouter.delete('/users/following/:followerId', unfollowUser);
 followRouter.get('/users/followers', getFollowers);
 
 followRouter.get('/users/following', getFollowing);
+

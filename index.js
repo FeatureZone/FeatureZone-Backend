@@ -11,6 +11,7 @@ import { getUserRouter } from "./routes/getUser_route.js";
 import { ContributorRouter } from "./routes/contributor_routes.js";
 import { commentRouter } from "./routes/comment_routes.js";
 import {userProfileRouter}from "./routes/userProfile_routes.js";
+import { followRouter } from "./routes/Follow_routes.js";
 
 const app = express();
 
@@ -35,7 +36,7 @@ app.use(session({
 
 expressOasGenerator.handleResponses(app,{
     alwaysServeDocs: true,
-    tags: ["auth","userProfile", "codeSnippet", "favourites"],
+    tags: ["auth", "users", "userProfile", "codeSnippet", "favourites", "following", "followers"],
     mongooseModels: mongoose.modelNames(),
 });
     
@@ -49,6 +50,7 @@ app.use(favouriteRouter);
 app.use(getUserRouter);
 app.use(ContributorRouter);
 app.use(commentRouter);
+app.use(followRouter)
 
 expressOasGenerator.handleRequests();
 app.use((req,res) => res.redirect("/api-docs"));

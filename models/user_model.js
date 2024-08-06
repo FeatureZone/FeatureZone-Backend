@@ -17,6 +17,9 @@ const userSchema = new Schema({
   verifyOtpAndResetPassword: { type: Date },
   favourites: [{type:Types.ObjectId, ref: "CodeSnippet"}],
  termsAndConditions: { type: Boolean },
+ followers:[{type: Types.ObjectId, ref: 'User'}],
+ following:[{type: Types.ObjectId, ref: 'User'}]
+
  },{
   timestamps: true
 });

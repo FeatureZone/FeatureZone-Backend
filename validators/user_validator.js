@@ -10,6 +10,9 @@ export const userValidator = Joi.object({
     password: Joi.string().min(4).required(),
     confirmPassword: Joi.ref('password'),
     termsAndConditions: Joi.boolean().required(),
+    followers: Joi.string(),
+    following: Joi.string()
+
     
 }).with('password', 'confirmPassword')
 

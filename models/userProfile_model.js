@@ -10,7 +10,6 @@ import { toJSON } from "@reis/mongoose-to-json";
     bio: { type: String },
     contact: { type: String },
     user: { type: Types.ObjectId, ref: 'User' },
-
 }, {
     timestamps: true
 })
