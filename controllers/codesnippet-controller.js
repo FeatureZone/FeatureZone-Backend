@@ -88,3 +88,31 @@ export const updateCode = async (req, res) => {
           res.status(500).json({ message: 'Internal Server Error' });
         }
       };
+
+
+      // Search code snippets
+export const searchCodes = async (req, res) => {
+  try {
+    const { title, content, language } = req.query;
+    const query = {};
+
+    if (title) {
+      query.title = { $regex: title, $options: 'i' }; 
+    }
+
+    if (content) {
+      query.content = { $regex: content, $options: 'i' };
+    }
+
+    if (language) {
+      query.language = { $regex: language, $options: 'i' };
+    }
+
+    const codes = await CodeSnippetModel.find(query);
+
+    res.status(200).json({ codes });
+  } catch (err) {
+    console.error('Error searching code snippets:', err);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
