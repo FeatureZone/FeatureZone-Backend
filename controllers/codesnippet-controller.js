@@ -77,6 +77,7 @@ export const updateCode = async (req, res) => {
   }
 };
 
+
 // Delete a code snippet
 export const deleteCode = async (req, res) => {
   try {
@@ -110,6 +111,34 @@ export const downloadCode = async (req, res) => {
     res.status(200).send(codeSnippet.code);
   } catch (err) {
     console.error('Error fetching code snippet for download:', err);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+
+      // Search code snippets
+export const searchCodes = async (req, res) => {
+  try {
+    const { title, content, language } = req.query;
+    const query = {};
+
+    if (title) {
+      query.title = { $regex: title, $options: 'i' }; 
+    }
+
+    if (content) {
+      query.content = { $regex: content, $options: 'i' };
+    }
+
+    if (language) {
+      query.language = { $regex: language, $options: 'i' };
+    }
+
+    const codes = await CodeSnippetModel.find(query);
+
+    res.status(200).json({ codes });
+  } catch (err) {
+    console.error('Error searching code snippets:', err);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
