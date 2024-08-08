@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createCode, deleteCode, getAllCodes, getOneCode, updateCode } from "../controllers/codesnippet-controller.js";
+import { createCode, deleteCode, getAllCodes, getOneCode, searchCodes, updateCode } from "../controllers/codesnippet-controller.js";
 
 
 export const codesnippetRouter = Router()
@@ -13,3 +13,8 @@ codesnippetRouter.get("/codeSnippet/:id", getOneCode);
 codesnippetRouter.patch("/codeSnippet/:id", updateCode);
 
 codesnippetRouter.delete("/codeSnippet/:id", deleteCode);
+
+codesnippetRouter.get("/codeSnippet/search", searchCodes);
+
+ 
+
